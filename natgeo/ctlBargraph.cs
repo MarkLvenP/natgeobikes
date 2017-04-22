@@ -36,15 +36,19 @@ namespace natgeo
         {
             if (bikes.Count == 0)
                 return;
-
-            int barSpacing = ClientRectangle.Width / bikes.Count;
+            int barLeft = 100;
+            int charthWidth = ClientRectangle.Width - barLeft;
+            int barSpacing = charthWidth / bikes.Count;
             int barWidth = barSpacing;
             int bottomMargin = 40;
-            int barMaxHeight = ClientRectangle.Height - bottomMargin;
 
-            int barLeft = 0;
+            int barMaxHeight = ClientRectangle.Height - bottomMargin;
+            Font labelFont = new Font(Font.Name, 30.0f, Font.Style, GraphicsUnit.Pixel);
+
             using (SolidBrush textBrush = new SolidBrush(Color.Black))
             {
+                e.Graphics.DrawString("Bike", labelFont, textBrush, 0, barMaxHeight);
+
                 foreach (bicycle thisBike in bikes.OrderBy(x => x.bikeIndex))
                 {
                     using (SolidBrush barBrush = new SolidBrush(Color.Brown))
@@ -75,7 +79,6 @@ namespace natgeo
                         string txtlabel = thisBike.lastPowerReadingW.ToString("F0");
                         if (txtlabel.Length == 0)
                             txtlabel = "0";
-                        Font labelFont = new Font(Font.Name, 30.0f , Font.Style, GraphicsUnit.Pixel);
 
                         using (Font myFont = new Font(Font.Name, (barWidth * 0.75f) / txtlabel.Length, Font.Style, GraphicsUnit.Pixel))
                         {
@@ -88,7 +91,7 @@ namespace natgeo
                                 barTop = (int) barMaxHeight;
 
                             e.Graphics.DrawString(txtlabel, myFont, textBrush, barLeft, barTop);
-                            e.Graphics.DrawString(thisBike.bikeIndex.ToString() , labelFont, textBrush, barLeft, barMaxHeight+0);
+                            e.Graphics.DrawString((thisBike.bikeIndex+1).ToString() , labelFont, textBrush, barLeft, barMaxHeight+0);
                             barLeft += barSpacing;
                         }
                     }
